@@ -1,8 +1,12 @@
 import { Search, Users as UsersIcon, UserRound, Store, Bike } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getAdminUsers } from '../services/adminService';
+import AddUserModal from './AddUserModal';
+import { createAdminUser } from '../services/adminService';
+
 function Users() {
     const [users, setUsers] = useState([]);
+    const [showAddUser, setShowAddUser] = useState(false);
     const [stats, setStats] = useState({
         totalUsers: 0,
         totalCustomers: 0,
@@ -37,6 +41,16 @@ function Users() {
 
         fetchUsers();
     }, []);
+
+    const handleCreateUser = async (userData) => {
+        await createAdminUser(userData);
+
+        // Refresh the users list and statistics
+        const data = await getAdminUsers();
+
+        setUsers(data.users);
+        setStats(data.stats);
+    };
 
     const filteredUsers = users.filter((user) => {
         const search = searchTerm.toLowerCase().trim();
@@ -87,22 +101,26 @@ function Users() {
                     <p>View and manage all registered users on FoodDash.</p>
                 </div>
 
-                <button className="users-add-button" type="button">
+                <button
+                    className="users-add-button"
+                    onClick={() => setShowAddUser(true)}
+                >
                     + Add User
                 </button>
             </div>
 
             <div className="users-stats-grid">
-                {statsCards.map(({ title:label, value, icon: Icon, color }) => (
+                {statsCards.map(({ title: label, value, icon: Icon, color }) => (
                     <div className="users-stat-card" key={label}>
+
+                        <div className={`users-stat-icon ${color}`}>
+                            <Icon size={32} />
+                        </div>
                         <div>
                             <p>{label}</p>
                             <h3>{value}</h3>
                         </div>
 
-                        <div className={`users-stat-icon ${color}`}>
-                            <Icon size={22} />
-                        </div>
                     </div>
                 ))}
             </div>
@@ -198,6 +216,12 @@ function Users() {
                     </table>
                 </div>
             </section>
+            {showAddUser && (
+                <AddUserModal
+                    onClose={() => setShowAddUser(false)}
+                    onUserCreated={handleCreateUser}
+                />
+            )}
         </div>
     );
 }

@@ -56,6 +56,10 @@ import Login from './components/Login';
 
 import Register from './components/Register';
 import UsersPage from './components/Users';
+import Restaurants from './components/Restaurants';
+import Orders from './components/Orders';
+import DeliveryPartners from './components/DeliveryPartners';
+
 
 import api from './services/api';
 
@@ -64,6 +68,8 @@ import { logoutUser } from './services/authService';
 import './App.css';
 
 import './AdminDashboard.css';
+import './Restaurant.css'
+import './Order.css'
 
 // ==========================================
 
@@ -1433,9 +1439,11 @@ function App() {
 
             </>
 
-          ) : activePage === 'Users' ? (
-  <UsersPage />
-): (
+          ) : activePage === 'Users' ? ( <UsersPage />
+          ) : activePage === 'Restaurants' ? (<Restaurants />
+          ) : activePage === 'Orders' ?  ( <Orders /> 
+          ) : activePage === 'DeliveryPartners' ?  ( <DeliveryPartners /> 
+          ) :  (
 
             /* Other dashboard sections */
 
