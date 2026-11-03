@@ -1443,14 +1443,14 @@ function App() {
 
             </>
 
-          ) : activePage === 'Users' ? ( <UsersPage />
+          ) : activePage === 'Users' ? (<UsersPage />
           ) : activePage === 'Restaurants' ? (<Restaurants />
-          ) : activePage === 'Orders' ?  ( <Orders /> 
-          ) : activePage === 'Delivery Partners' ?  ( <DeliveryPartners /> 
-          ) : activePage === 'Settings' ?  ( <SettingPage /> 
-          ) : activePage === 'Menu Management' ?  ( <MenuManagement /> 
+          ) : activePage === 'Orders' ? (<Orders />
+          ) : activePage === 'Delivery Partners' ? (<DeliveryPartners />
+          ) : activePage === 'Settings' ? (<SettingPage />
+          ) : activePage === 'Menu Management' ? (<MenuManagement />
 
-          ) :  (
+          ) : (
 
             /* Other dashboard sections */
 
