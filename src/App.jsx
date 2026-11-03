@@ -59,6 +59,7 @@ import UsersPage from './components/Users';
 import Restaurants from './components/Restaurants';
 import Orders from './components/Orders';
 import DeliveryPartners from './components/DeliveryPartners';
+import './MenuManagement.css';
 
 
 import api from './services/api';
@@ -70,6 +71,9 @@ import './App.css';
 import './AdminDashboard.css';
 import './Restaurant.css'
 import './Order.css'
+import './SettingPage.css'
+import SettingPage from './components/SettingPage';
+import MenuManagement from './components/MenuManagement';
 
 // ==========================================
 
@@ -1442,7 +1446,10 @@ function App() {
           ) : activePage === 'Users' ? ( <UsersPage />
           ) : activePage === 'Restaurants' ? (<Restaurants />
           ) : activePage === 'Orders' ?  ( <Orders /> 
-          ) : activePage === 'DeliveryPartners' ?  ( <DeliveryPartners /> 
+          ) : activePage === 'Delivery Partners' ?  ( <DeliveryPartners /> 
+          ) : activePage === 'Settings' ?  ( <SettingPage /> 
+          ) : activePage === 'Menu Management' ?  ( <MenuManagement /> 
+
           ) :  (
 
             /* Other dashboard sections */
