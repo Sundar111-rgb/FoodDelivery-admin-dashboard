@@ -55,3 +55,14 @@ export const getAdminDeliveryPartners = async () => {
   const response = await api.get('/admin/delivery-partners');
   return response.data;
 };
+
+
+// Create a new menu item
+export const createMenuItem = async (restaurantId, menuData) => {
+  const response = await api.post(
+    `/restaurants/${restaurantId}/menu`,
+    menuData
+  );
+
+  return response.data;
+};

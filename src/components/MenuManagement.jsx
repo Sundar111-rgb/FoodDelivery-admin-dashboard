@@ -11,54 +11,68 @@ import {
   Trash2,
   Filter,
   ImagePlus,
+  X,
 } from 'lucide-react';
 
+const initialItems = [
+  {
+    id: 1,
+    name: 'Paneer Butter Masala',
+    category: 'Main Course',
+    price: 249,
+    restaurant: 'Spice Garden',
+    available: true,
+  },
+  {
+    id: 2,
+    name: 'Chicken Biryani',
+    category: 'Biryani',
+    price: 299,
+    restaurant: 'Spice Garden',
+    available: true,
+  },
+  {
+    id: 3,
+    name: 'Veg Spring Rolls',
+    category: 'Starters',
+    price: 149,
+    restaurant: 'Spice Garden',
+    available: false,
+  },
+  {
+    id: 4,
+    name: 'Masala Dosa',
+    category: 'South Indian',
+    price: 120,
+    restaurant: 'South Kitchen',
+    available: true,
+  },
+];
+
+const categories = [
+  'Main Course',
+  'Biryani',
+  'Starters',
+  'South Indian',
+  'Desserts',
+  'Beverages',
+];
 
 const MenuManagement = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: 'Paneer Butter Masala',
-      category: 'Main Course',
-      price: 249,
-      restaurant: 'Spice Garden',
-      available: true,
-    },
-    {
-      id: 2,
-      name: 'Chicken Biryani',
-      category: 'Biryani',
-      price: 299,
-      restaurant: 'Spice Garden',
-      available: true,
-    },
-    {
-      id: 3,
-      name: 'Veg Spring Rolls',
-      category: 'Starters',
-      price: 149,
-      restaurant: 'Spice Garden',
-      available: false,
-    },
-    {
-      id: 4,
-      name: 'Masala Dosa',
-      category: 'South Indian',
-      price: 120,
-      restaurant: 'South Kitchen',
-      available: true,
-    },
-  ]);
+  const [items, setItems] = useState(initialItems);
+  const [showModal, setShowModal] = useState(false);
 
-  const categories = [
-    'All',
-    'Main Course',
-    'Biryani',
-    'Starters',
-    'South Indian',
-  ];
+  const [formData, setFormData] = useState({
+    name: '',
+    category: '',
+    price: '',
+    restaurant: 'Spice Garden',
+    description: '',
+    image: '',
+    available: true,
+  });
 
   const filteredItems = items.filter((item) => {
     const matchesSearch =
@@ -71,9 +85,47 @@ const MenuManagement = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleAddItem = (e) => {
+    e.preventDefault();
+
+    const newItem = {
+      id: Date.now(),
+      name: formData.name.trim(),
+      category: formData.category,
+      price: Number(formData.price),
+      restaurant: formData.restaurant,
+      description: formData.description.trim(),
+      image: formData.image.trim(),
+      available: formData.available,
+    };
+
+    setItems((prev) => [...prev, newItem]);
+
+    setFormData({
+      name: '',
+      category: '',
+      price: '',
+      restaurant: 'Spice Garden',
+      description: '',
+      image: '',
+      available: true,
+    });
+
+    setShowModal(false);
+  };
+
   const toggleAvailability = (id) => {
-    setItems((previousItems) =>
-      previousItems.map((item) =>
+    setItems((prev) =>
+      prev.map((item) =>
         item.id === id
           ? { ...item, available: !item.available }
           : item
@@ -82,21 +134,13 @@ const MenuManagement = () => {
   };
 
   const deleteItem = (id) => {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete this menu item?'
-    );
-
-    if (confirmed) {
-      setItems((previousItems) =>
-        previousItems.filter((item) => item.id !== id)
-      );
+    if (window.confirm('Are you sure you want to delete this menu item?')) {
+      setItems((prev) => prev.filter((item) => item.id !== id));
     }
   };
 
   const totalItems = items.length;
-  const availableItems = items.filter(
-    (item) => item.available
-  ).length;
+  const availableItems = items.filter((item) => item.available).length;
   const unavailableItems = totalItems - availableItems;
 
   return (
@@ -109,7 +153,10 @@ const MenuManagement = () => {
           <p>Manage restaurant food items, prices and availability.</p>
         </div>
 
-        <button className="add-menu-btn">
+        <button
+          className="add-menu-btn"
+          onClick={() => setShowModal(true)}
+        >
           <Plus size={18} />
           Add Menu Item
         </button>
@@ -153,14 +200,14 @@ const MenuManagement = () => {
             <Tags size={21} />
           </div>
           <div>
-            <h3>{categories.length - 1}</h3>
+            <h3>{categories.length}</h3>
             <p>Categories</p>
           </div>
         </div>
 
       </div>
 
-      {/* Menu Table Card */}
+      {/* Menu Table */}
       <div className="menu-table-card">
 
         <div className="menu-table-header">
@@ -189,9 +236,10 @@ const MenuManagement = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
+              <option value="All">All Categories</option>
               {categories.map((item) => (
                 <option key={item} value={item}>
-                  {item === 'All' ? 'All Categories' : item}
+                  {item}
                 </option>
               ))}
             </select>
@@ -202,7 +250,6 @@ const MenuManagement = () => {
         {/* Table */}
         <div className="menu-table-wrapper">
           <table className="menu-table">
-
             <thead>
               <tr>
                 <th>FOOD ITEM</th>
@@ -217,7 +264,6 @@ const MenuManagement = () => {
             <tbody>
               {filteredItems.map((item) => (
                 <tr key={item.id}>
-
                   <td>
                     <div className="menu-item-info">
                       <div className="menu-item-image">
@@ -268,7 +314,6 @@ const MenuManagement = () => {
                       </button>
                     </div>
                   </td>
-
                 </tr>
               ))}
 
@@ -279,7 +324,6 @@ const MenuManagement = () => {
                   </td>
                 </tr>
               )}
-
             </tbody>
           </table>
         </div>
@@ -289,6 +333,150 @@ const MenuManagement = () => {
         </div>
 
       </div>
+
+      {/* Add Menu Item Modal */}
+      {showModal && (
+        <div
+          className="menu-modal-overlay"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="menu-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+
+            <div className="menu-modal-header">
+              <div>
+                <h2>Add Menu Item</h2>
+                <p>Add a new food item to your restaurant menu.</p>
+              </div>
+
+              <button
+                type="button"
+                className="menu-modal-close"
+                onClick={() => setShowModal(false)}
+              >
+                <X size={21} />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddItem}>
+
+              <div className="menu-form-group">
+                <label>Food Item Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter food item name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="menu-form-row">
+
+                <div className="menu-form-group">
+                  <label>Category</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Select Category</option>
+                    {categories.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="menu-form-group">
+                  <label>Price (₹)</label>
+                  <input
+                    type="number"
+                    name="price"
+                    placeholder="Enter price"
+                    min="1"
+                    step="0.01"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+
+              </div>
+
+              <div className="menu-form-group">
+                <label>Restaurant</label>
+                <select
+                  name="restaurant"
+                  value={formData.restaurant}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="Spice Garden">Spice Garden</option>
+                  <option value="South Kitchen">South Kitchen</option>
+                </select>
+              </div>
+
+              <div className="menu-form-group">
+                <label>Description</label>
+                <textarea
+                  name="description"
+                  placeholder="Describe the food item..."
+                  rows="3"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="menu-form-group">
+                <label>Food Image URL</label>
+                <input
+                  type="url"
+                  name="image"
+                  placeholder="https://example.com/food-image.jpg"
+                  value={formData.image}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <label className="menu-availability-option">
+                <input
+                  type="checkbox"
+                  name="available"
+                  checked={formData.available}
+                  onChange={handleInputChange}
+                />
+                Item is available for ordering
+              </label>
+
+              <div className="menu-modal-actions">
+                <button
+                  type="button"
+                  className="menu-cancel-btn"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="menu-submit-btn"
+                >
+                  <Plus size={17} />
+                  Add Menu Item
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

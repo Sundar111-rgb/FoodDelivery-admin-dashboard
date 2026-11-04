@@ -435,3 +435,273 @@
     padding: 16px;
   }
 }
+
+
+/* =====================================
+   ADD MENU ITEM MODAL
+===================================== */
+
+.menu-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
+  animation: menuFadeIn 0.25s ease;
+}
+
+.menu-modal {
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.22);
+  animation: menuSlideUp 0.3s ease;
+}
+
+/* Modal Header */
+
+.menu-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 25px 28px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.menu-modal-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.menu-modal-header p {
+  margin: 7px 0 0;
+  color: #8490a3;
+  font-size: 13px;
+}
+
+.menu-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 9px;
+  background: #f3f5f9;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menu-modal-close:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* Form */
+
+.menu-modal form {
+  padding: 25px 28px 28px;
+}
+
+.menu-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 20px;
+  min-width: 0;
+}
+
+.menu-form-group label {
+  color: #344054;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.menu-form-group input,
+.menu-form-group select,
+.menu-form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #e2e7ef;
+  border-radius: 9px;
+  outline: none;
+  background: #fbfcfe;
+  color: #263247;
+  font-family: inherit;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.menu-form-group input,
+.menu-form-group select {
+  height: 44px;
+}
+
+.menu-form-group textarea {
+  min-height: 95px;
+  resize: vertical;
+}
+
+.menu-form-group input::placeholder,
+.menu-form-group textarea::placeholder {
+  color: #a5adba;
+}
+
+.menu-form-group input:focus,
+.menu-form-group select:focus,
+.menu-form-group textarea:focus {
+  border-color: #6366f1;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.menu-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* Availability */
+
+.menu-availability-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 5px 0 25px;
+  color: #475467;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.menu-availability-option input {
+  width: 17px;
+  height: 17px;
+  accent-color: #6366f1;
+  cursor: pointer;
+}
+
+/* Modal Footer Buttons */
+
+.menu-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid #edf0f5;
+}
+
+.menu-cancel-btn,
+.menu-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 43px;
+  padding: 0 20px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menu-cancel-btn {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #475467;
+}
+
+.menu-cancel-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.menu-submit-btn {
+  border: none;
+  background: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+}
+
+.menu-submit-btn:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(79, 70, 229, 0.25);
+}
+
+/* =====================================
+   MODAL ANIMATIONS
+===================================== */
+
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes menuSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =====================================
+   RESPONSIVE DESIGN
+===================================== */
+
+@media (max-width: 600px) {
+  .menu-modal-overlay {
+    padding: 12px;
+    align-items: center;
+  }
+
+  .menu-modal {
+    max-height: 92vh;
+    border-radius: 14px;
+  }
+
+  .menu-modal-header {
+    padding: 20px;
+  }
+
+  .menu-modal form {
+    padding: 20px;
+  }
+
+  .menu-form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .menu-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .menu-cancel-btn,
+  .menu-submit-btn {
+    width: 100%;
+  }
+}
